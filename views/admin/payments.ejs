@@ -1,0 +1,14 @@
+<%- include('../partials/admin-head') %>
+<h1>Lịch sử giao dịch</h1>
+<form class="toolbar" method="get" action="/admin/payments">
+  <div class="field grow"><label for="payment-q">Tìm kiếm</label><input id="payment-q" type="search" name="q" value="<%= filters.q %>" placeholder="Mã đơn, mã giao dịch, email"></div>
+  <div class="field"><label for="payment-status">Trạng thái</label><select id="payment-status" name="status"><option value="">Tất cả</option><% ['PENDING','PAID','FAILED','CANCELLED','REFUNDED'].forEach(function (s) { %><option value="<%= s %>"<%= filters.status === s ? ' selected' : '' %>><%= s %></option><% }) %></select></div>
+  <button class="btn btn-sm" type="submit">Lọc</button><a class="btn btn-outline btn-sm" href="/admin/payments">Xóa lọc</a>
+</form>
+<% if (!items.length) { %><p class="empty">Chưa có giao dịch SePay.</p><% } else { %>
+<div class="table-wrap"><table class="data"><thead><tr><th>Mã đơn</th><th>Khách hàng</th><th>Mã tham chiếu</th><th>Số tiền</th><th>Trạng thái</th><th>Tạo lúc</th><th>Thanh toán lúc</th></tr></thead><tbody>
+<% items.forEach(function (p) { %><tr><td><a href="/admin/orders/<%= p.orderCode %>"><strong><%= p.orderCode %></strong></a></td><td><%= p.customerName %><br><span class="muted small"><%= p.customerEmail %></span></td><td><code><%= p.paymentRef %></code></td><td class="num"><%= vnd(p.amount) %></td><td><span class="badge <%= S.paymentBadgeClass(p.status) %>"><%= S.PAYMENT_LABELS[p.status] || p.status %></span></td><td><%= fmtDateTime(p.createdAt) %></td><td><%= p.paidAt ? fmtDateTime(p.paidAt) : '—' %></td></tr><% }) %>
+</tbody></table></div>
+<%- include('../partials/pagination', { pagination: pagination, basePath: '/admin/payments', qs: baseQuery }) %>
+<% } %>
+<%- include('../partials/admin-foot') %>

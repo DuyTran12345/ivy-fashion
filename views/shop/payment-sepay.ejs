@@ -1,0 +1,22 @@
+<%- include('../partials/head') %>
+<div class="wrap">
+  <div class="page-title"><h1>Thanh toán online</h1><p class="muted">Đơn hàng <strong><%= order.code %></strong></p></div>
+  <div class="checkout-grid">
+    <section class="panel qr-payment">
+      <h2>Quét mã QR để thanh toán</h2>
+      <p class="muted">Mở ứng dụng ngân hàng, quét mã và giữ nguyên nội dung chuyển khoản.</p>
+      <div class="qr-frame"><img src="<%= payment.checkoutUrl %>" alt="Mã QR thanh toán đơn <%= order.code %>"></div>
+      <p class="qr-amount"><%= vnd(payment.amount) %></p>
+      <p class="payment-reference">Nội dung chuyển khoản: <strong><%= sepay.content %></strong></p>
+      <div class="payment-bank-info">
+        <p><span>Ngân hàng</span><strong><%= sepay.bankName %></strong></p>
+        <p><span>Số tài khoản</span><strong><%= sepay.accountNumber %></strong></p>
+        <p><span>Chủ tài khoản</span><strong><%= sepay.accountName %></strong></p>
+      </div>
+      <div class="notice info">Hệ thống sẽ đối soát giao dịch theo nội dung trên. Bạn có thể đóng trang này và xem lại trong đơn hàng.</div>
+      <a class="btn btn-block" href="/orders/<%= order.code %>">Quay lại chi tiết đơn hàng</a>
+    </section>
+    <aside class="summary"><h2>Thông tin đơn hàng</h2><dl class="sum"><dt>Mã đơn</dt><dd><%= order.code %></dd><dt>Trạng thái</dt><dd>Chờ thanh toán</dd><dt class="total">Tổng cộng</dt><dd class="total"><%= vnd(order.total) %></dd></dl></aside>
+  </div>
+</div>
+<%- include('../partials/foot') %>
